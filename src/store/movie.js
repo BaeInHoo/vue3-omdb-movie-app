@@ -1,5 +1,5 @@
 import axios from 'axios'
-import _uniqBy, { reject } from 'lodash'
+import _uniqBy from 'lodash'
 
 export default {
     // module!
@@ -28,36 +28,43 @@ export default {
     // 비동기
     actions: {
         async searchMovies({ state, commit }, payload) {
-            const { title, type, number, year } = payload
-            
-
-            const res = await axios.get(`http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&${type}&y=${year}&page=1`)
-            const { Search, totalResults } = res.data
-            commit('updateState', {
-                movies: _uniqBy(Search, 'imdbID')
-            })
-
-            const total = parseInt(totalResults, 10)
-            const pageLength = Math.ceil(total / 10)
-
-            // 추가 요청!
-            if (pageLength > 1) {
-                for(let page = 1; page <= pageLength; page += 1) {
-                    if(page > (payload.number / 10)) {
-                        break
+            try {
+                const res = await _fetchMovie({
+                    ...payload,
+                    page: 1
+                })
+                const { Search, totalResults } = res.data
+                commit('updateState', {
+                    movies: _uniqBy(Search, 'imdbID')
+                })
+    
+                const total = parseInt(totalResults, 10)
+                const pageLength = Math.ceil(total / 10)
+    
+                // 추가 요청!
+                if (pageLength > 1) {
+                    for(let page = 1; page <= pageLength; page += 1) {
+                        if(page > (payload.number / 10)) {
+                            break
+                        }
+                        const res = await _fetchMovie({
+                            ...payload,
+                            page
+                        })
+                        const { Search } = res.data
+                        commit('updateState', {
+                            movies: [
+                                ...state.movies, 
+                                ..._uniqBy(Search, 'imdbID')
+                            ]
+                        })
                     }
-                    const res = await _fetchMovie({
-                        ...payload,
-                        page
-                    })
-                    const { Search } = res.data
-                    commit('updateState', {
-                        movies: [
-                            ...state.movies, 
-                            ..._uniqBy(Search, 'imdbID')
-                        ]
-                    })
                 }
+            } catch (message) {
+                commit('updateState', {
+                    movies: [],
+                    message
+                })
             }
         }
     }
@@ -72,6 +79,9 @@ function _fetchMovie(payload) {
         axios.get(url)
             .then(res => {
                 resolve(res)
+                if(res.data.Error) {
+                    reject(res.data.Error)
+                }
             })
             .catch(err => {
                 reject(err.message)
