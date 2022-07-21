@@ -7,7 +7,7 @@ export default {
     // data!
     state: () => ({
         movies: [],
-        message: '',
+        message: 'Search for the movie title',
         loading: false
     }),
     // computed!
