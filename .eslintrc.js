@@ -24,7 +24,7 @@ module.exports = {
         }],
         "vue/multi-word-component-names": ["error", {
           "ignores": ["default", "Home", "Header", "Movie", "Logo", 
-                      "Headline", "Search", "About"]
+                      "Headline", "Search", "About", "Footer"]
         }]
       }
 }
