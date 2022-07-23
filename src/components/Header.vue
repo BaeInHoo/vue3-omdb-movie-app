@@ -22,27 +22,27 @@
 <script>
 import Logo from '~/components/Logo'
 export default {
-    components: {
-      Logo
-    },
-    data() {
-        return {
-            navigations: [
-                {
-                    name: "Search",
-                    href: "/"
-                },
-                {
-                    name: "Movie",
-                    href: "/movie"
-                },
-                {
-                    name: "About",
-                    href: "/about"
-                }
-            ]
-        };
-    }
+  components: {
+    Logo
+  },
+  data() {
+    return {
+      navigations: [
+        {
+          name: "Search",
+          href: "/"
+        },
+        {
+          name: "Movie",
+          href: "/movie"
+        },
+        {
+          name: "About",
+          href: "/about"
+        }
+      ]
+    };
+  }
 }
 </script>
 
