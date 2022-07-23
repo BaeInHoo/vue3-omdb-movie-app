@@ -13,9 +13,10 @@ export default {
   components: {
     Headline,
     Search,
-    // eslint-disable-next-line vue/no-unused-components
-    MovieList,
+    MovieList
+  },
+  created() {
+    this.$store.commit('movie/resetMovies')
   }
 }
-
 </script>
