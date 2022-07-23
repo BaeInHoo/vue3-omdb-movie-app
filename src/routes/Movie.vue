@@ -11,11 +11,26 @@
         <div class="skeleton etc"></div>
       </div>
     </div>
+    <Loader 
+      :size="3"
+      :z-index="9"
+      fixed="true"
+    />
   </div>
 </template>
 
 <script>
+import Loader from '~/components/Loader'
+
 export default {
+  components: {
+    Loader
+  },
+  computed: {
+    theMovie() {
+      return this.$store.state.movie.theMovie
+    }
+  },
   created() {
     this.$store.dispatch('movie/searchMovieWithId', {
       id: this.$route.params.id
@@ -33,12 +48,13 @@ export default {
 .skeletons {
   display: flex;
   .poster {
+    flex-shrink: 0;
     width: 500px;
     height: 500px * 3 / 2;
     margin-right: 70px;
   }
   .specs {
-
+    flex-grow: 1;
   }
   .skeleton {
     border-radius: 10px;
@@ -50,14 +66,17 @@ export default {
     &.spec {
       width: 60%;
       height: 30px;
+      margin-top: 20px;
     }
     &.plot {
       width: 100%;
       height: 250px;
+      margin-top: 20px;
     }
     &.etc {
       width: 50%;
       height: 50px;
+      margin-top: 20px;
     }
   }
 }

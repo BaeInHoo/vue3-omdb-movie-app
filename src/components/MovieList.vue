@@ -4,10 +4,7 @@
       :class="{ 'no-result': !movies.length }"
       class="inner"
     >
-      <div
-        v-if="loading"
-        class="spinner-border text-primary"
-      ></div>
+      <Loader v-if="loading" />
       <div
         v-if="message"
         class="message"
@@ -27,11 +24,14 @@
 
 <script>
 import MovieItem from '~/components/MovieItem'
+import Loader from '~/components/Loader'
 
 export default {
     components: {
         // eslint-disable-next-line vue/no-unused-components
-        MovieItem
+        MovieItem,
+        // eslint-disable-next-line vue/no-unused-components
+        Loader
     },
     computed: {
         movies() {
